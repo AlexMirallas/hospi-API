@@ -4,7 +4,7 @@ import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@Controller('products/:productId/combinations')
+@Controller('v1/products/:productId/combinations')
 @UseGuards(JwtAuthGuard)
 export class CombinationsController {
   constructor(private readonly combinationsService: CombinationsService) {}

@@ -13,6 +13,7 @@ export class SignUpDto {
 
   @IsString()
   lastName: string;
+
 }
 
 export class SignInDto {
@@ -21,4 +22,6 @@ export class SignInDto {
 
   @IsString()
   password: string;
+
+
 }

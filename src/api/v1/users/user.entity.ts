@@ -20,7 +20,10 @@ export class User {
   firstName: string;
 
   @Column()
-  lastName: string;
+  lastName: string;  
+
+  @Column("simple-array", { default: ['user'] })
+  role: string[];
 
   @CreateDateColumn()
   createdAt: Date;

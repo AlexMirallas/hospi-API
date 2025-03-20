@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { ProductsModule } from './products/products.module';
-import { typeOrmConfig } from './config/typeorm.config';
+import { AuthModule } from './api/v1/auth/auth.module';
+import { ProductsModule } from './api/v1/products/products.module';
+import { typeOrmConfig } from './api/v1/config/typeorm.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

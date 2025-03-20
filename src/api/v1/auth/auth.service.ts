@@ -25,11 +25,12 @@ export class AuthService {
       password: hashedPassword,
       firstName,
       lastName,
+      role: ['user'],
     });
 
     try {
       await this.userRepository.save(user);
-      const token = this.jwtService.sign({ userId: user.id });
+      const token = this.jwtService.sign({ userId: user.id , role: user.role });
       return { token };
     } catch (error) {
       if (error.code === '23505') {
@@ -39,13 +40,13 @@ export class AuthService {
     }
   }
 
-  async signIn(credentials: SignInDto): Promise<{ token: string }> {
+  async signIn(credentials: SignInDto): Promise<{ token: string, role: string[]}> {
     const { email, password } = credentials;
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = this.jwtService.sign({ userId: user.id });
-      return { token };
+      const token = this.jwtService.sign({ userId: user.id , role: user.role });
+      return { token,  role: user.role };
     }
     throw new UnauthorizedException('Invalid credentials');
   }

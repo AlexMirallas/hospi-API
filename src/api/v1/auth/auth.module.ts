@@ -14,7 +14,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret: 'your-secret-key', // In production, use environment variables
       signOptions: {
-        expiresIn: '24h',
+        expiresIn: '2h',
       },
     }),
   ],

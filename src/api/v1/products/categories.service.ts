@@ -40,4 +40,8 @@ export class CategoriesService {
     Object.assign(category, updateCategoryDto);
     return this.categoryRepository.save(category);
   }
+
+  async delete(id: string): Promise<void> {
+    await this.categoryRepository.delete(id);
+  }
 }

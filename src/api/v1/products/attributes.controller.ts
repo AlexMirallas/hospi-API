@@ -4,7 +4,7 @@ import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@Controller('attributes')
+@Controller('v1/attributes')
 @UseGuards(JwtAuthGuard)
 export class AttributesController {
   constructor(private readonly attributesService: AttributesService) {}
