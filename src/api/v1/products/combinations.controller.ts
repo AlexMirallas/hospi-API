@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
 import { CombinationsService } from './combinations.service';
 import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
@@ -9,7 +9,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class CombinationsController {
   constructor(private readonly combinationsService: CombinationsService) {}
 
-  @Post()
+  @Post('/create')
   create(
     @Param('productId') productId: string,
     @Body() createCombinationDto: CreateCombinationDto,
@@ -17,16 +17,21 @@ export class CombinationsController {
     return this.combinationsService.create(productId, createCombinationDto);
   }
 
-  @Get()
+  @Get('/list')
   findByProduct(@Param('productId') productId: string) {
     return this.combinationsService.findByProduct(productId);
   }
 
-  @Patch(':id')
+  @Patch('/update/:id')
   update(
     @Param('id') id: string,
     @Body() updateCombinationDto: UpdateCombinationDto,
   ) {
     return this.combinationsService.update(id, updateCombinationDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.combinationsService.remove(id);
   }
 }

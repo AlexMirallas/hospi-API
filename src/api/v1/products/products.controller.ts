@@ -10,22 +10,22 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createProductDto: CreateProductDto): Promise<ProductResponseDto> {
     return this.productsService.create(createProductDto);
   }
 
-  @Get()
+  @Get('/list')
   findAll(): Promise<ProductResponseDto[]> {
     return this.productsService.findAll();
   }
 
-  @Get(':id')
+  @Get('/show/:id')
   findOne(@Param('id') id: string): Promise<ProductResponseDto> {
     return this.productsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('/update/:id')
   update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
@@ -33,7 +33,7 @@ export class ProductsController {
     return this.productsService.update(id, updateProductDto);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   remove(@Param('id') id: string): Promise<void> {
     return this.productsService.remove(id);
   }

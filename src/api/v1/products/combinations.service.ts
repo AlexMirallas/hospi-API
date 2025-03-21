@@ -71,4 +71,8 @@ export class CombinationsService {
     Object.assign(combination, updateDto);
     return this.combinationRepository.save(combination);
   }
+
+  async remove(id: string): Promise<void> {
+    await this.combinationRepository.delete(id);
+  }
 }
