@@ -5,6 +5,7 @@ import { ProductsModule } from './api/v1/products/products.module';
 import { typeOrmConfig } from './api/v1/config/typeorm.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 @Module({
   imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, ProductsModule],
   controllers: [AppController],
