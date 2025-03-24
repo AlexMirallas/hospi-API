@@ -6,6 +6,7 @@ import { ProductCombination } from './entities/product-combination.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update.dto';
 import { ProductResponseDto } from './dto/response.dto';
+import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ProductsService {
@@ -66,5 +67,9 @@ export class ProductsService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
     await this.productRepository.remove(product);
+  }
+
+  async paginate(options:IPaginationOptions):Promise<Pagination<ProductResponseDto>>{
+    return paginate<ProductResponseDto>(this.productRepository, options);
   }
 }

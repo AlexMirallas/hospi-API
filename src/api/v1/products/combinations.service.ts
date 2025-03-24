@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 import { AttributeValue } from './entities/attribute-value.entity';
 import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
+import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class CombinationsService {
@@ -74,5 +75,9 @@ export class CombinationsService {
 
   async remove(id: string): Promise<void> {
     await this.combinationRepository.delete(id);
+  }
+
+  async paginate(options:IPaginationOptions):Promise<Pagination<ProductCombination>>{
+    return paginate<ProductCombination>(this.combinationRepository, options);
   }
 }

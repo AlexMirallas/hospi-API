@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Query, ParseIntPipe, DefaultValuePipe, Res } from '@nestjs/common';
 import { CombinationsService } from './combinations.service';
 import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Response } from 'express';
 
 @Controller('v1/products/:productId/combinations')
 @UseGuards(JwtAuthGuard)
@@ -17,12 +18,31 @@ export class CombinationsController {
     return this.combinationsService.create(productId, createCombinationDto);
   }
 
-  @Get('/list')
-  findByProduct(@Param('productId') productId: string) {
-    return this.combinationsService.findByProduct(productId);
-  }
+  @Get()
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Res() res: Response
+  ): Promise<any> {
+    const pagination =  await this.combinationsService.paginate({ 
+      page, 
+      limit,
+      route: '/v1/products/:productId/combinations/list',
+    });
+    const total = pagination.meta.totalItems;
+    const start = (page - 1) * limit;
+    const end = start + pagination.items.length - 1;
 
-  @Patch('/update/:id')
+    return res
+    .header('Content-Range', `${start}-${end}/${total}`)
+    .json({
+      data: pagination.items,
+      total: total
+    });
+  }
+  
+
+  @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateCombinationDto: UpdateCombinationDto,

@@ -50,4 +50,9 @@ export class AuthService {
     }
     throw new UnauthorizedException('Invalid credentials');
   }
+
+  async signOut() {
+    return { message: 'User signed out' };
+  }
+
 }

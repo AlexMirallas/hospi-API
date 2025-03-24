@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update.dto';
+import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class CategoriesService {
@@ -43,5 +44,13 @@ export class CategoriesService {
 
   async delete(id: string): Promise<void> {
     await this.categoryRepository.delete(id);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.categoryRepository.delete(id);
+  }
+
+  async paginate(options:IPaginationOptions):Promise<Pagination<Category>>{
+    return paginate<Category>(this.categoryRepository, options);
   }
 }

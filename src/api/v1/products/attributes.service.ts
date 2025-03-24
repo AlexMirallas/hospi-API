@@ -6,6 +6,7 @@ import { AttributeValue } from './entities/attribute-value.entity';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
 import { UpdateAttributeDto, UpdateAttributeValueDto } from './dto/update.dto';
+import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class AttributesService {
@@ -56,5 +57,9 @@ export class AttributesService {
     }
 
     return attribute;
+  }
+
+  async paginate(options:IPaginationOptions):Promise<Pagination<Attribute>>{
+    return paginate<Attribute>(this.attributeRepository, options);
   }
 }

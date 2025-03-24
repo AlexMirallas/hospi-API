@@ -15,4 +15,10 @@ export class AuthController {
   signIn(@Body(ValidationPipe) credentials: SignInDto) {
     return this.authService.signIn(credentials);
   }
+
+  @Post('/signout')
+  signOut() {
+    return this.authService.signOut();
+  }
 }
+
