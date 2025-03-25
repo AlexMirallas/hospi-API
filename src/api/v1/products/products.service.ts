@@ -7,6 +7,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update.dto';
 import { ProductResponseDto } from './dto/response.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
+import { Category } from '../products/entities/category.entity';
 
 @Injectable()
 export class ProductsService {
@@ -71,5 +72,14 @@ export class ProductsService {
 
   async paginate(options:IPaginationOptions):Promise<Pagination<ProductResponseDto>>{
     return paginate<ProductResponseDto>(this.productRepository, options);
+  }
+
+  async getCategories(productId: string): Promise<Category[]> {
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'categories')
+      .where('product.id = :productId', { productId })
+      .getOne()
+      .then(product => product?.categories || []);
   }
 }

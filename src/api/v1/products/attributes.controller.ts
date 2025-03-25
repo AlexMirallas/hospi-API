@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Query, ParseIntPipe, DefaultValuePipe, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Query, ParseIntPipe, DefaultValuePipe, Res, Patch, Delete } from '@nestjs/common';
 import { AttributesService } from './attributes.service';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
-import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateValueDto   } from './dto/create-value.dto';
 import { Response } from 'express';
+import { UpdateAttributeDto } from './dto/update.dto';
+import { AttributeValue } from './entities/value.entity';
 
 @Controller('v1/attributes')
 export class AttributesController {
@@ -14,10 +15,7 @@ export class AttributesController {
     return this.attributesService.createAttribute(createAttributeDto);
   }
 
-  @Post('values')
-  createAttributeValue(@Body() createValueDto: CreateAttributeValueDto) {
-    return this.attributesService.createAttributeValue(createValueDto);
-  }
+  
 
   @Get()
   async findAll(
@@ -46,4 +44,17 @@ export class AttributesController {
   findOne(@Param('id') id: string) {
     return this.attributesService.findAttributeById(id);
   }
+
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateAttributeDto: UpdateAttributeDto) {
+    return this.attributesService.updateAttribute(id, updateAttributeDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.attributesService.deleteAttribute(id);
+  }
+
+  
 }

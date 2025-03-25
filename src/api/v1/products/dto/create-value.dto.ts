@@ -1,6 +1,6 @@
 import { IsString, IsNumber, IsOptional, IsUUID } from 'class-validator';
 
-export class CreateAttributeValueDto {
+export class CreateValueDto {
   @IsString()
   value: string;
 

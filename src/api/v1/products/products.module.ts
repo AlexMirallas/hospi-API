@@ -11,8 +11,10 @@ import { CategoriesService } from './categories.service';
 import { Product } from './entities/product.entity';
 import { ProductCombination } from './entities/product-combination.entity';
 import { Attribute } from './entities/attribute.entity';
-import { AttributeValue } from './entities/attribute-value.entity';
+import { AttributeValue } from './entities/value.entity';
 import { Category } from './entities/category.entity';
+import { ValuesController } from './values.controller';
+import { ValuesService } from './values.service';
 
 @Module({
   imports: [
@@ -29,18 +31,21 @@ import { Category } from './entities/category.entity';
     AttributesController,
     CombinationsController,
     CategoriesController,
+    ValuesController
   ],
   providers: [
     ProductsService,
     AttributesService,
     CombinationsService,
     CategoriesService,
+    ValuesService
   ],
   exports: [
     ProductsService,
     AttributesService,
     CombinationsService,
     CategoriesService,
+    ValuesService
   ],
 })
 export class ProductsModule {}

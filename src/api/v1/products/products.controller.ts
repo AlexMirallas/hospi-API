@@ -6,6 +6,7 @@ import { ProductResponseDto } from './dto/response.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { Response } from 'express';
+import { Category } from '../products/entities/category.entity';
 
 
 @Controller('v1/products')
@@ -44,6 +45,11 @@ export class ProductsController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<ProductResponseDto> {
     return this.productsService.findOne(id);
+  }
+
+  @Get(':id/categories')
+  async getCategories(@Param('id') id: string): Promise<Category[]> {
+    return this.productsService.getCategories(id);
   }
 
   @Patch(':id')

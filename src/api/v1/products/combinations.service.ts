@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductCombination } from './entities/product-combination.entity';
 import { Product } from './entities/product.entity';
-import { AttributeValue } from './entities/attribute-value.entity';
+import { AttributeValue } from './entities/value.entity';
 import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';

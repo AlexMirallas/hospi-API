@@ -2,10 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attribute } from './entities/attribute.entity';
-import { AttributeValue } from './entities/attribute-value.entity';
+import { AttributeValue } from './entities/value.entity';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
-import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
-import { UpdateAttributeDto, UpdateAttributeValueDto } from './dto/update.dto';
+import { UpdateAttributeDto } from './dto/update.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
@@ -22,22 +21,6 @@ export class AttributesService {
     return this.attributeRepository.save(attribute);
   }
 
-  async createAttributeValue(createValueDto: CreateAttributeValueDto): Promise<AttributeValue> {
-    const attribute = await this.attributeRepository.findOne({
-      where: { id: createValueDto.attributeId },
-    });
-
-    if (!attribute) {
-      throw new NotFoundException(`Attribute with ID ${createValueDto.attributeId} not found`);
-    }
-
-    const value = this.attributeValueRepository.create({
-      ...createValueDto,
-      attribute,
-    });
-
-    return this.attributeValueRepository.save(value);
-  }
 
   async findAllAttributes(): Promise<Attribute[]> {
     return this.attributeRepository.find({
@@ -61,5 +44,41 @@ export class AttributesService {
 
   async paginate(options:IPaginationOptions):Promise<Pagination<Attribute>>{
     return paginate<Attribute>(this.attributeRepository, options);
+  }
+
+  async getAttributeValues(id: string): Promise<AttributeValue[]> {
+    return this.attributeValueRepository.find({
+      where: { attribute: { id } },
+      order: { position: 'ASC' },
+    });
+  }
+
+  async updateAttribute(id: string, updateAttributeDto: UpdateAttributeDto): Promise<Attribute> {
+    const attribute = await this.attributeRepository.findOne({
+      where: { id },
+      relations: ['values'],
+    });
+
+    if (!attribute) {
+      throw new NotFoundException(`Attribute with ID ${id} not found`);
+    }
+
+    return this.attributeRepository.save({
+      ...attribute,
+      ...updateAttributeDto,
+    });
+  }
+
+  async deleteAttribute(id: string): Promise<Attribute> {
+    const attribute = await this.attributeRepository.findOne({
+      where: { id },
+      relations: ['values'],
+    });
+
+    if (!attribute) {
+      throw new NotFoundException(`Attribute with ID ${id} not found`);
+    }
+
+    return this.attributeRepository.remove(attribute);
   }
 }

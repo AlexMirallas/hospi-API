@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 't
 import { Attribute } from './attribute.entity';
 import { ProductCombination } from './product-combination.entity';
 
-@Entity('attribute_values')
+@Entity('values')
 export class AttributeValue {
   @PrimaryGeneratedColumn('uuid')
   id: string;

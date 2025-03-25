@@ -7,6 +7,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: 'postgres',
   password: 'postgres',
   database: 'hospi-app',
+  schema: 'public',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: true, // Set to false in production
 };

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, Index } from 'typeorm';
 import { Product } from './product.entity';
-import { AttributeValue } from './attribute-value.entity';
+import { AttributeValue } from './value.entity';
 
 @Entity('product_combinations')
 @Index(['product', 'reference'], { unique: true })

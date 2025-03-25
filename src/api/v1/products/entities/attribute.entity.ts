@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { AttributeValue } from './attribute-value.entity';
+import { AttributeValue } from './value.entity';
 
 @Entity('attributes')
 export class Attribute {

@@ -5,8 +5,7 @@ import { UpdateCombinationDto } from './dto/update.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 
-@Controller('v1/products/:productId/combinations')
-@UseGuards(JwtAuthGuard)
+@Controller('v1/combinations')
 export class CombinationsController {
   constructor(private readonly combinationsService: CombinationsService) {}
 
@@ -27,7 +26,7 @@ export class CombinationsController {
     const pagination =  await this.combinationsService.paginate({ 
       page, 
       limit,
-      route: '/v1/products/:productId/combinations/list',
+      route: '/v1/combinations',
     });
     const total = pagination.meta.totalItems;
     const start = (page - 1) * limit;
