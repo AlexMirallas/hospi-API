@@ -10,5 +10,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   schema: 'public',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: true, // Set to false in production
+  logging: true,
+  logger: 'file',
 };
   

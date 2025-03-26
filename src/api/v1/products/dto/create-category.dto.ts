@@ -11,5 +11,4 @@ export class CreateCategoryDto {
   @IsNumber()
   @IsOptional()
   position?: number;
-
 }

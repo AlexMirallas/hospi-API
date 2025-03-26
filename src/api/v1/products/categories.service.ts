@@ -6,6 +6,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
 
+
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -20,8 +21,9 @@ export class CategoriesService {
   }
 
   async findAll(): Promise<Category[]> {
-    return this.categoryRepository.find();
-  }
+    const query = this.categoryRepository.createQueryBuilder('category');
+    return query.getMany();
+  } 
 
   async findOne(id: string): Promise<Category> {
     const category = await this.categoryRepository.findOne({

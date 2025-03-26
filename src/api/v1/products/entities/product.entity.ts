@@ -23,11 +23,15 @@ export class Product {
   active: boolean;
 
 
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, category => category.products, 
+  { cascade: true,
+    eager: true,
+   }
+)
   @JoinTable({
     name: 'product_categories',
-    joinColumn: { name: 'product_id' },
-    inverseJoinColumn: { name: 'category_id' }
+    joinColumn: { name: 'product_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'category_id' , referencedColumnName: 'id' },
   })
   categories: Category[];
 

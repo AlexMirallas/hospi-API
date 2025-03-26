@@ -19,14 +19,33 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<ProductResponseDto> {
-    const product = this.productRepository.create(createProductDto);
+    console.log("Creating product instance using DTO")// Create product instance
+    const product = this.productRepository.create({
+      ...createProductDto,
+      categories: []
+    });
     
-    if (createProductDto.categoryIds) {
-      product.categories = createProductDto.categoryIds.map(id => ({ id })) as any;
+    if (createProductDto.categories?.length) {
+      const categories = await this.productRepository.manager.getRepository(Category)
+        .createQueryBuilder('category')
+        .where('category.id IN (:...ids)', { ids: createProductDto.categories })
+        .getMany();
+
+      console.log('Found categories:', categories);
+
+      if (categories.length !== createProductDto.categories.length) {
+        throw new NotFoundException('Some categories were not found');
+      }
+
+      product.categories = categories;
     }
 
-    await this.productRepository.save(product);
-    return this.findOne(product.id);
+    // Save with categories
+    const savedProduct = await this.productRepository.save(product);
+    console.log('Saved product:', savedProduct);
+    
+    // Fetch fresh data with all relations
+    return this.findOne(savedProduct.id);
   }
 
   async findAll(): Promise<ProductResponseDto[]> {
@@ -49,14 +68,51 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto): Promise<ProductResponseDto> {
-    const product = await this.findOne(id);
-
-    if (updateProductDto.categoryIds) {
-      product.categories = updateProductDto.categoryIds.map(id => ({ id })) as any;
+    console.log('Updating product:', id, 'with data:', updateProductDto);
+  
+    // Find product with relations
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: ['categories']
+    });
+  
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
     }
-
+  
+    // Handle categories separately
+    if (updateProductDto.categories !== undefined) {
+      console.log('Updating categories:', updateProductDto.categories);
+      
+      // Get categories even if array is empty (to clear categories)
+      const categories = updateProductDto.categories.length > 0 
+        ? await this.productRepository.manager.getRepository(Category)
+            .createQueryBuilder('category')
+            .where('category.id IN (:...ids)', { ids: updateProductDto.categories })
+            .getMany()
+        : [];
+  
+      // Validate categories if IDs were provided
+      if (updateProductDto.categories.length > 0 && 
+          categories.length !== updateProductDto.categories.length) {
+        throw new NotFoundException('Some categories were not found');
+      }
+  
+      // Assign new categories
+      product.categories = categories;
+      
+      // Remove categoryIds from DTO to prevent double processing
+      delete updateProductDto.categories;
+    }
+  
+    // Update other fields
     Object.assign(product, updateProductDto);
-    await this.productRepository.save(product);
+  
+    // Save changes
+    const savedProduct = await this.productRepository.save(product);
+    console.log('Updated product:', savedProduct);
+  
+    // Return fresh data with all relations
     return this.findOne(id);
   }
 

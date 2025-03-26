@@ -22,5 +22,5 @@ export class CreateProductDto {
   @IsArray()
   @IsUUID(undefined, { each: true })
   @IsOptional()
-  categoryIds?: string[];
+  categories?: string[];
 }
