@@ -23,7 +23,7 @@ export class Product {
   active: boolean;
 
 
-  @ManyToMany(() => Category, category => category.products, 
+  @ManyToMany(() => Category, 
   { cascade: true,
     eager: true,
    }

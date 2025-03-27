@@ -15,8 +15,5 @@ export class Category {
   @Column()
   position: number;
 
-  @ManyToMany(() => Product, (product) => product.categories)
-  @JoinTable()
-  products: Product[];
 
 }

@@ -1,21 +1,25 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Query, ParseIntPipe, DefaultValuePipe, Res, Patch, Delete } from '@nestjs/common';
 import { AttributesService } from './attributes.service';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
-import { CreateValueDto   } from './dto/create-value.dto';
+import { CreateValueDto  } from './dto/create-value.dto';
 import { Response } from 'express';
 import { UpdateAttributeDto } from './dto/update.dto';
-import { AttributeValue } from './entities/value.entity';
+import { ValuesService } from './values.service';
+
 
 @Controller('v1/attributes')
 export class AttributesController {
-  constructor(private readonly attributesService: AttributesService) {}
+  constructor(private readonly attributesService: AttributesService, private readonly valuesService: ValuesService) {}
 
   @Post()
   createAttribute(@Body() createAttributeDto: CreateAttributeDto) {
     return this.attributesService.createAttribute(createAttributeDto);
   }
 
-  
+  @Post('values')
+  createValue(@Body() createValueDto: CreateValueDto) {
+    return this.valuesService.createAttributeValue(createValueDto);
+  }
 
   @Get()
   async findAll(

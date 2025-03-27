@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductCombination } from './entities/product-combination.entity';
 import { Product } from './entities/product.entity';
-import { AttributeValue } from './entities/value.entity';
+import { Value } from './entities/value.entity';
 import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
@@ -15,8 +15,8 @@ export class CombinationsService {
     private combinationRepository: Repository<ProductCombination>,
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
-    @InjectRepository(AttributeValue)
-    private attributeValueRepository: Repository<AttributeValue>,
+    @InjectRepository(Value)
+    private attributeValueRepository: Repository<Value>,
   ) {}
 
   async create(productId: string, createDto: CreateCombinationDto): Promise<ProductCombination> {
@@ -48,7 +48,7 @@ export class CombinationsService {
   async findByProduct(productId: string): Promise<ProductCombination[]> {
     return this.combinationRepository.find({
       where: { product: { id: productId } },
-      relations: ['attributeValues', 'attributeValues.attribute'],
+      relations: ['values', 'values.attribute'],
     });
   }
 

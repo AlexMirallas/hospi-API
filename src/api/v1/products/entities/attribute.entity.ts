@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { AttributeValue } from './value.entity';
+import { Value } from './value.entity';
 
 @Entity('attributes')
 export class Attribute {
@@ -15,6 +15,6 @@ export class Attribute {
   @Column({ default: true })
   active: boolean;
 
-  @OneToMany(() => AttributeValue, value => value.attribute)
-  values: AttributeValue[];
+  @OneToMany(() => Value, value => value.attribute, { cascade: true, eager: true })
+  values: Value[];
 }

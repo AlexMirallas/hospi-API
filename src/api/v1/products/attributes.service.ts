@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attribute } from './entities/attribute.entity';
-import { AttributeValue } from './entities/value.entity';
+import { Value } from './entities/value.entity';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update.dto';
 import { Pagination,IPaginationOptions,paginate } from 'nestjs-typeorm-paginate';
@@ -12,8 +12,8 @@ export class AttributesService {
   constructor(
     @InjectRepository(Attribute)
     private attributeRepository: Repository<Attribute>,
-    @InjectRepository(AttributeValue)
-    private attributeValueRepository: Repository<AttributeValue>,
+    @InjectRepository(Value)
+    private attributeValueRepository: Repository<Value>,
   ) {}
 
   async createAttribute(createAttributeDto: CreateAttributeDto): Promise<Attribute> {
@@ -46,7 +46,7 @@ export class AttributesService {
     return paginate<Attribute>(this.attributeRepository, options);
   }
 
-  async getAttributeValues(id: string): Promise<AttributeValue[]> {
+  async getAttributeValues(id: string): Promise<Value[]> {
     return this.attributeValueRepository.find({
       where: { attribute: { id } },
       order: { position: 'ASC' },

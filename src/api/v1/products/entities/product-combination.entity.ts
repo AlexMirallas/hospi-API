@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, Index } from 'typeorm';
 import { Product } from './product.entity';
-import { AttributeValue } from './value.entity';
+import { Value } from './value.entity';
 
 @Entity('product_combinations')
 @Index(['product', 'reference'], { unique: true })
@@ -26,11 +26,11 @@ export class ProductCombination {
   @ManyToOne(() => Product, product => product.combinations)
   product: Product;
 
-  @ManyToMany(() => AttributeValue, value => value.combinations)
+  @ManyToMany(() => Value, value => value.combinations)
   @JoinTable({
     name: 'combination_attribute_values',
     joinColumn: { name: 'combination_id' },
     inverseJoinColumn: { name: 'attribute_value_id' }
   })
-  attributeValues: AttributeValue[];
+  attributeValues: Value[];
 }

@@ -11,4 +11,6 @@ export class CreateAttributeDto {
   @IsBoolean()
   @IsOptional()
   active?: boolean;
+
+  
 }

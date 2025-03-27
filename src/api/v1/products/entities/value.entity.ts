@@ -3,7 +3,7 @@ import { Attribute } from './attribute.entity';
 import { ProductCombination } from './product-combination.entity';
 
 @Entity('values')
-export class AttributeValue {
+export class Value {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

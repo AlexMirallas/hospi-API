@@ -21,6 +21,7 @@ export class ValuesController {
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('attributeId') attributeId: string,
     @Res() res: Response
   ): Promise<any> {
     const pagination =  await this.valuesService.paginate({ 
